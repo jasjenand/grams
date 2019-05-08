@@ -7,6 +7,27 @@ pfork = pd.read_csv("ps4k.csv")
 goat = pd.read_csv("goats.csv").set_index("Number")
 winners = pd.read_csv("gramcys.csv").drop(columns="awardType").sort_values("annualGrammy").reset_index(drop=True)
 
+
+#FUNCTIONS
+def albumGrammyInfo(album):
+    artist = winners.iloc[index]["name"]
+    year = winners.iloc[index]["year"]
+    cat = winners.iloc[index]["category"]
+    print("In %d, %s won %s for %s." % (year, artist, cat, album))
+    
+def songGrammyInfo(song):
+    artist = winners.iloc[index]["name"]
+    year = winners.iloc[index]["year"]
+    cat = winners.iloc[index]["category"]
+    print("In %d, %s won %s for %s." % (year, artist, cat, song))
+    
+def findGOATalbum(album):
+    if goat["Album"].str.contains(album).any():
+        print("The Rolling Stones considers this album one of the GOATs.")
+        display(goat.loc[goat["Album"] == album])
+    else:
+        pass
+
 #BILLBOARD HOT 100 SECTION
 #order hot100.csv file by week and chart position
 hot100["WeekID"]=pd.to_datetime(hot100["WeekID"])
@@ -15,7 +36,6 @@ hot100.set_index("WeekID")
 
 
 #GRAMMY SECTION
-winners.sort_values("annualGrammy")
 while True:
     interest = input("Are you interested in artists, albums, or songs? ")
     if interest.lower() not in ("artists", "albums", "songs"):
@@ -33,7 +53,6 @@ elif interest.lower() == "songs":
     song = input("Pick a song: ")
     display(winners.loc[winners["awardFor"] == song])
     
-    
 #don't pick a Best New Artist category
 index = int(input("Type the index number of a category you're interested in: "))
 winners.iloc[index]
@@ -41,6 +60,7 @@ winners.iloc[index]
 if winners.iloc[index].str.contains("Album").any():
     albumQuery = winners.iloc[index]["awardFor"]
     albumGrammyInfo(albumQuery)
+    findGOATalbum(albumQuery)
 else:
     songQuery = winners.iloc[index]["awardFor"]
     songGrammyInfo(songQuery)
