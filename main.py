@@ -114,7 +114,23 @@ else:
 
 #PITCHFORK REVIEWS SECTION
 pfork["date"] = pd.to_datetime(pfork["date"])
-pfork.loc[pfork["artist"] == "Chance the Rapper"] #can be any artist duh
+
+#search by album
+album = input("Find an album: ")
+if pfork["album"].str.contains(album).any():
+    rating = pfork.loc[pfork["album"] == album]
+    if len(rating) > 1:
+        display(rating)
+    else:
+        score = rating.iloc[0]["score"]
+        artistName = rating.iloc[0]["artist"]
+        print("Pitchfork rated this album by %s: %g out of 10." % (artistName, score))
+else: print("Pitchfork hasn't reviewed this album.")
+
+#search by artist
+artist = input("Find an artist: ")
+rating = pfork.loc[pfork["artist"] == artist].reset_index(drop=True)
+display(rating)
 
 
 #GREATEST ALBUMS SECTION
